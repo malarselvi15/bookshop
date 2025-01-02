@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Shop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="menu">
+        <img src="asserts/menuimg-removebg-preview.png" alt="Menu" onclick="openNav()">
+    </div>
+
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <a href="javascript:void(0)" onclick="sortBooks('alphabetical')">Sort Alphabetically</a>
+        <a href="javascript:void(0)" onclick="sortBooks('price')">Sort by Price</a>
+    </div>
+
+    <div class="logo">
+        <h1>Book Shop</h1>
+        <img src="asserts/bookimg-removebg-preview.png" class="bookimg">
+    </div>
+
+    <div class="nav">
+        <li>Home</li>
+        <li>Products</li>
+        <li>Shop Online</li>
+        <li><a href="addbook.html">Add Books</a></li>
+    </div>
+
+    <div class="search">
+        <input id="search-bar" type="text" placeholder="Search the Book...">
+    </div>
+
+    <div class="container"></div>
+
+    <div class="slider-container">
+        <div class="slider">
+            <img src="https://www.shutterstock.com/image-vector/promo-banner-bookstore-bookshop-library-260nw-1976145590.jpg" alt="Slide 1">
+            <img src="https://www.shutterstock.com/image-vector/banner-books-concept-bookstore-bookshop-260nw-2331880681.jpg" alt="Slide 2">
+            <img src="https://static.vecteezy.com/system/resources/previews/023/107/438/non_2x/promo-banner-with-reading-bookshelve-with-stack-of-books-globe-inkwell-quill-world-book-day-bookstore-bookshop-library-book-lover-bibliophile-education-for-poster-cover-advertising-vector.jpg" alt="Slide 3">
+        </div>
+    </div>
+
+    <hr>
+
+    <footer>
+       <p> BookShop@2025</p>
+       <p>Chennai</p>
+       <p>908746575</p>
+    </footer>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchBar = document.getElementById("search-bar");
+            const container = document.querySelector(".container");
+
+            const fetchBooks = async (query = "") => {
+                try {
+                    const response = await fetch(`/books?${query}`);
+                    if (!response.ok) throw new Error("Failed to fetch books");
+
+                    const books = await response.json();
+
+                    container.innerHTML = "";
+
+                    if (books.length === 0) {
+                        container.innerHTML = "<p>No books found</p>";
+                        return;
+                    }
+
+                    books.forEach((book) => {
+                        const card = document.createElement("div");
+                        card.className = "card";
+                        card.innerHTML = `
+                            <img src="${book.img}" alt="${book.bookname}">
+                            <p style="font-weight:bold">${book.bookname}</p>
+                            <span style="color: red; font-size: 23px;">$${book.price}</span>
+                            <br>
+                            <button class="addtocard">Add to card</button>
+                            <button class="buy-now" data-book='${JSON.stringify(book)}'>Buy Now</button>
+                        `;
+                        container.appendChild(card);
+                    });
+
+                    document.querySelectorAll(".buy-now").forEach((button) =>
+                        button.addEventListener("click", (e) => {
+                            const bookData = JSON.parse(e.target.dataset.book);
+                            localStorage.setItem("selectedBook", JSON.stringify(bookData));
+                            window.location.href = "order.html";
+                        })
+                    );
+                } catch (error) {
+                    console.error("Error loading books:", error);
+                    container.innerHTML = "<p>Error loading books. Please try again later.</p>";
+                }
+            };
+
+            fetchBooks();
+
+            searchBar.addEventListener("input", (e) => {
+                fetchBooks(`search=${e.target.value}`);
+            });
+
+            window.sortBooks = (sortOption) => {
+                fetchBooks(`sort=${sortOption}`);
+            };
+        });
+    </script>
+</body>
+</html>

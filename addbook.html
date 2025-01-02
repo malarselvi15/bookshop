@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Books</title>
+    <style>
+      body{
+        background-image: url(https://previews.123rf.com/images/vtmila/vtmila1707/vtmila170700060/82498902-open-book-hardback-books-on-bright-colorful-background.jpg);
+        background-size: cover;
+        position: relative;
+      }
+        form {
+            background-color: wheat;
+            color: black;
+            width: 400px;
+            margin-top: 200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        form input {
+            border-radius: 5px;
+            margin-bottom: 15px;
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: lightblue;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0078D4;
+            color: white;
+        }
+        .arrow{
+          height: 50px;
+          width: 50px;
+
+        }
+    </style>
+</head>
+<body>
+
+<div>
+  <a href="inde.html"> <img src="asserts/arrow-removebg-preview.png" class="arrow"></a>
+</div>
+
+    <form action="/register" method="POST">
+        <label for="bookname">Book Name</label>
+        <input type="text" id="bookname" name="bookname" placeholder="Enter book name" required>
+        
+        <label for="img">Image URL</label>
+        <input type="url" id="img" name="img" placeholder="Enter image URL" required>
+        
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" placeholder="Enter price" required>
+        
+        <button type="submit">Add Book</button>
+    </form>
+
+
+
+    <script>
+        document.getElementById("addBookForm").addEventListener("submit", async (e) => {
+          e.preventDefault(); // Prevent default form submission
+    
+          const bookname = document.getElementById("bookname").value;
+          const img = document.getElementById("img").value;
+          const price = document.getElementById("price").value;
+    
+          try {
+            const response = await fetch("/register", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ bookname, img, price }),
+            });
+    
+            if (response.ok) {
+              alert("Book added successfully!");
+              const newBook = await response.json();
+              updateBookList(newBook); // Update the frontend dynamically
+              e.target.reset(); // Clear the form
+            } else {
+              alert("Failed to add book!");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Error occurred while adding the book.");
+          }
+        });
+    
+        // Function to update the frontend with the new book
+        function updateBookList(book) {
+          const container = document.querySelector(".container");
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="${book.img}" alt="${book.bookname}">
+            <p>${book.bookname}</p>
+            <span style="color: red; font-size: 23px;">$${book.price}</span>
+            <br>
+            <button>Buy Now</button>
+          `;
+          container.appendChild(card);
+        }
+      </script>
+</body>
+</html>
