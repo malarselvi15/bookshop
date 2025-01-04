@@ -1,11 +1,11 @@
-require("dotenv").config();
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
 
 const app = express();
-const port = 4000;
+const port = 5000;
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
