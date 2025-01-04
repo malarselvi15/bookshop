@@ -1,0 +1,21 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+logs/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Render-specific temp files
+tmp/
+.cache/
+
+# IDE or editor settings
+.vscode/
+.idea/
