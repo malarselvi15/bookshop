@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        #order-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 90%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .order-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .order-image img {
+            width: 300px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-details {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .order-details h2 {
+            margin: 0;
+            color: #333;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .order-details p {
+            margin: 10px 0;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .order-details input {
+            width: 60px;
+            padding: 8px;
+            font-size: 1rem;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .additional-details {
+            margin-top: 20px;
+        }
+
+        .additional-details label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .additional-details input, .additional-details textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .buttons button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons button:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="order-container">
+        <div class="order-image">
+            <img id="book-image" src="" alt="Book Image">
+        </div>
+
+        <div class="order-details">
+            <h2 id="book-title">Book Title</h2>
+            <p id="book-price">Price: $0</p>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" value="1" min="1">
+
+            <div class="additional-details">
+                <label for="buyer-name">Buyer Name:</label>
+                <input type="text" id="buyer-name" placeholder="Enter your name" required>
+
+                <label for="upi-number">UPI Number:</label>
+                <input type="text" id="upi-number" placeholder="Enter your UPI number" required>
+
+                <label for="delivery-address">Delivery Address:</label>
+                <textarea id="delivery-address" rows="4" placeholder="Enter your full delivery address" required></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button onclick="confirmOrder()">Confirm Order</button>
+        <button onclick="window.location.href='index.html'">Go Back</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const selectedBook = JSON.parse(localStorage.getItem("selectedBook"));
+
+            if (selectedBook) {
+                document.getElementById("book-image").src = selectedBook.img;
+                document.getElementById("book-title").textContent = selectedBook.bookname;
+                document.getElementById("book-price").textContent = `Price: $${selectedBook.price}`;
+            } else {
+                document.getElementById("order-container").innerHTML = "<p>No order details available.</p>";
+            }
+        });
+
+        async function confirmOrder() {
+            const quantity = document.getElementById("quantity").value;
+            const buyerName = document.getElementById("buyer-name").value.trim();
+            const upiNumber = document.getElementById("upi-number").value.trim();
+            const deliveryAddress = document.getElementById("delivery-address").value.trim();
+            const selectedBook = JSON.parse(localStorage.getItem("selectedBook"));
+
+            if (!selectedBook) {
+                alert("No book selected.");
+                return;
+            }
+
+            if (!buyerName || !upiNumber || !deliveryAddress) {
+                alert("Please fill in all the details to confirm the order.");
+                return;
+            }
+
+            if (!/^\d{10}$/.test(upiNumber)) {
+                alert("Invalid UPI number. It should be a 10-digit number.");
+                return;
+            }
+
+            const orderData = {
+                bookname: selectedBook.bookname,
+                img: selectedBook.img,
+                price: selectedBook.price,
+                quantity: quantity,
+                buyerName: buyerName,
+                upiNumber: upiNumber,
+                deliveryAddress: deliveryAddress
+            };
+
+            try {
+                const response = await fetch("http://localhost:5000/orders", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(`Order confirmed!\n\nOrder ID: ${result.orderId}`);
+                    localStorage.removeItem("selectedBook");
+                    window.location.href = "inde.html";
+                } else {
+                    alert("Failed to place order. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error placing order:", error);
+                alert("Error placing order. Please check your internet connection.");
+            }
+        }
+    </script>
+</body>
+</html>

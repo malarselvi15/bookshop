@@ -29,6 +29,7 @@
         <li>Products</li>
         <li>Shop Online</li>
         <li><a href="addbook.html">Add Books</a></li>
+        <li><a href="cart.html">My Cart</a></li>
     </div>
 
     <div class="search">
@@ -88,12 +89,24 @@
                             <p style="font-weight:bold">${book.bookname}</p>
                             <span style="color: red; font-size: 23px;">$${book.price}</span>
                             <br>
-                            <button class="addtocard">Add to card</button>
+                            <button class="addtocard" data-book='${JSON.stringify(book)}'>Add to Cart</button>
                             <button class="buy-now" data-book='${JSON.stringify(book)}'>Buy Now</button>
                         `;
                         container.appendChild(card);
                     });
 
+                    // Add to Cart Functionality
+                    document.querySelectorAll(".addtocard").forEach((button) =>
+                        button.addEventListener("click", (e) => {
+                            const bookData = JSON.parse(e.target.dataset.book);
+                            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+                            cart.push(bookData);
+                            localStorage.setItem("cart", JSON.stringify(cart));
+                            alert(`${bookData.bookname} added to cart!`);
+                        })
+                    );
+
+                    // Buy Now Functionality
                     document.querySelectorAll(".buy-now").forEach((button) =>
                         button.addEventListener("click", (e) => {
                             const bookData = JSON.parse(e.target.dataset.book);

@@ -1,5 +1,5 @@
 body{
-    background-image: url(asserts/backgroundimg.jpg);
+    /* background-image: url(asserts/backgroundimg.jpg); */
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -30,7 +30,7 @@ body{
 .nav{
     display: flex;
     text-align: center;
-    margin-left: 500px;
+    margin-left: 400px;
     margin-top: 0px;
     
 }
@@ -52,9 +52,10 @@ body{
 }
 .addtocard{
     padding: 10px;
-    background-color: blue;
+    background-color:green;
     color: white;
     border-radius: 5px;
+    border: none;
 }
 button{
     padding: 10px;
@@ -63,6 +64,7 @@ button{
     border-radius: 5px;
   margin-left: 20px;
    font-weight: bold;
+   border: none;
 }
 .nav li a{
     text-decoration: none;
@@ -120,7 +122,7 @@ button{
     z-index: 100;
     top: 0;
     left: 0; /* Move the sidebar to the left */
-    background-color: blueviolet; /* Change the background color */
+    background-color: rgb(22, 122, 155); /* Change the background color */
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;

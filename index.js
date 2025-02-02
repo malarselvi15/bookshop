@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("Connected to MongoDB"))
 .catch((err) => console.error("Database connection error:", err));
 
-// Define Schema and Model
+// Define Book Schema and Model
 const bookSchema = new mongoose.Schema({
   bookname: { type: String, required: true },
   img: { type: String, required: true },
@@ -31,12 +31,28 @@ const bookSchema = new mongoose.Schema({
 
 const Book = mongoose.model("Book", bookSchema);
 
-// Routes
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "inde.html")); // Serve the home page
+// Define Order Schema and Model
+const orderSchema = new mongoose.Schema({
+  bookname: { type: String, required: true },
+  img: { type: String, required: true },
+  price: { type: String, required: true },
+  quantity: { type: Number, required: true },
+  buyerName: { type: String, required: true },
+  upiNumber: { type: String, required: true },
+  deliveryAddress: { type: String, required: true },
+  orderDate: { type: Date, default: Date.now },
 });
 
+const Order = mongoose.model("Order", orderSchema);
+
+// Routes
+
+// Home page
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "inde.html"));
+});
+
+// Register a new book
 app.post("/register", async (req, res) => {
   try {
     const { bookname, img, price } = req.body;
@@ -56,24 +72,53 @@ app.post("/register", async (req, res) => {
 // Search and fetch books
 app.get("/books", async (req, res) => {
   try {
-    const { search, sort } = req.query;  // Get search and sort query params
+    const { search, sort } = req.query;
     const query = search
-      ? { bookname: { $regex: search, $options: "i" } } // Case-insensitive search
+      ? { bookname: { $regex: search, $options: "i" } }
       : {};
 
     let sortOption = {};
     if (sort === "alphabetical") {
-      sortOption = { bookname: 1 };  // Sort alphabetically
+      sortOption = { bookname: 1 };
     } else if (sort === "price") {
-      sortOption = { price: 1 };  // Sort by price (assuming price is stored as string)
+      sortOption = { price: 1 };
     }
 
-    const books = await Book.find(query).sort(sortOption);  // Apply sorting and query filter
-    res.json(books);  // Send the sorted books back as a JSON response
-
+    const books = await Book.find(query).sort(sortOption);
+    res.json(books);
   } catch (error) {
     console.error("Error fetching book details:", error);
     res.status(500).send("Error fetching data.");
+  }
+});
+
+// Route to save order details
+app.post("/orders", async (req, res) => {
+  try {
+    const { bookname, img, price, quantity, buyerName, upiNumber, deliveryAddress } = req.body;
+
+    // Validate input
+    if (!bookname || !img || !price || !quantity || !buyerName || !upiNumber || !deliveryAddress) {
+      return res.status(400).send("All fields are required.");
+    }
+
+    // Create a new order document
+    const newOrder = new Order({
+      bookname,
+      img,
+      price,
+      quantity,
+      buyerName,
+      upiNumber,
+      deliveryAddress,
+    });
+
+    // Save the order
+    await newOrder.save();
+    res.status(201).json({ message: "Order placed successfully!", orderId: newOrder._id });
+  } catch (error) {
+    console.error("Error saving order:", error);
+    res.status(500).send("Error saving order. Please try again.");
   }
 });
 
