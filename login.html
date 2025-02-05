@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://static.vecteezy.com/system/resources/thumbnails/039/830/455/small_2x/ai-generated-an-open-book-photo.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            margin-left: 100px;
+          margin-bottom: 100px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .forgot-password {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Enter Email" required>
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevents form from submitting traditionally
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+    
+            alert("Login successful! Email: " + email); // Show success message
+            window.location.href = "addbook.html"; // Redirect to addbook.html
+        });
+    </script>
+    
+</body>
+</html>

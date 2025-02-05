@@ -200,4 +200,58 @@ footer{
     text-align: center;
     background-color: black;
     color: white;
+    margin-top: 20px;
+}
+
+.book-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 10px;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+}
+
+.book-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+.book {
+    flex: 0 0 auto;
+    width: 160px;
+    text-align: center;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.book:hover {
+    transform: scale(1.05);
+}
+
+.book img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.book-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 8px 0 4px;
+    color: #333;
+}
+
+.book-price {
+    font-size: 14px;
+    color: #27ae60;
+    font-weight: bold;
+}
+.oneslider{
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }

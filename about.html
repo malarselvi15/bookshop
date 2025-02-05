@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .nav-content {
+            background-color: lightblue;
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .nav-content a {
+            text-decoration: none;
+            color: black;
+            padding: 25px;
+            font-weight: bold;
+        }
+
+        .logo img {
+            height: 50px;
+            width: 50px;
+            margin-left: 10px;
+            float: left;
+        }
+
+        /* SLIDER STYLES */
+        .slider {
+            position: relative;
+            width: 100%; /* FULL WIDTH */
+            max-width: 1400px; /* Optional max width */
+            height: 500px; /* Fixed height */
+            overflow: hidden;
+            margin: 30px auto;
+            border-radius: 10px;
+            background: #ddd;
+        }
+
+        .slides {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .slides img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Makes sure image fills the entire space */
+            border-radius: 10px;
+        }
+
+        /* Show Active Slide */
+        .slides.active {
+            opacity: 1;
+        }
+
+        /* Text Overlay */
+        .slides .slide-content {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        .category {
+            margin-bottom: 30px;
+        }
+        .book-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .book-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .book-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .book-card h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .book-card p {
+            color: #555;
+            font-size: 14px;
+        }
+        h2 {
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="nav">
+    <div class="nav-content">
+        <div class="logo">
+           <a href="inde.html"><img src="asserts/arrow-removebg-preview.png" alt="Arrow"></a> 
+        </div>
+        <p>Grab Best shelling Books upto 70% off!</p>
+    </div>
+</div>
+
+<!-- IMAGE SLIDER -->
+<div class="slider">
+    <div class="slides active">
+        <img src="https://www.shutterstock.com/image-vector/promo-banner-bookstore-bookshop-library-260nw-1976145590.jpg" alt="Image 1">
+        <div class="slide-content">Welcome to Our Bookstore 📚</div>
+    </div>
+    <div class="slides">
+        <img src="https://static.vecteezy.com/system/resources/previews/017/708/254/non_2x/bookshelve-with-books-decorative-house-potted-plant-bookstore-bookshop-book-lover-concept-isolated-illustration-vector.jpg" alt="Image 2">
+        <div class="slide-content">Discover a World of Books! 🌍</div>
+    </div>
+    <div class="slides">
+        <img src="https://img.freepik.com/free-vector/flat-landing-page-template-world-book-day-celebration_23-2150208235.jpg" alt="Image 3">
+        <div class="slide-content">Read, Learn, and Grow! 📖</div>
+    </div>
+    
+</div>
+
+<div class="category">
+    <h2>Science Fiction</h2>
+    <div class="book-container">
+        <div class="book-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScEtF9aLVNs4DvwTF0AzHn4mgqaT27YTBRgA&s" alt="Book 1">
+            <h3>Dune</h3>
+            <p>Author: Frank Herbert</p>
+        </div>
+        <div class="book-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScnisR3Jq6-jsCCzh24YPw5v1EUyNfevsM-Q&s" alt="Book 2">
+            <h3>Neuromancer</h3>
+            <p>Author: William Gibson</p>
+        </div>
+        <div class="book-card">
+            <img src="https://m.media-amazon.com/images/I/51vkqHfvAyL._SL500_.jpg" alt="Book 2">
+            <h3>William Gibson</h3>
+            <p>Author: William Gibson</p>
+        </div>
+    </div>
+</div>
+
+<div class="category">
+    <h2>Self-Help</h2>
+    <div class="book-container">
+        <div class="book-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3PKqxFFKPTS2qxYb6EUPsa82Wz9ht2x-9jA&s" alt="Book 3">
+            <h3>The Power of Habit</h3>
+            <p>Author: Charles Duhigg</p>
+        </div>
+        <div class="book-card">
+            <img src="https://m.media-amazon.com/images/I/61M6KzUbf7L._AC_UF1000,1000_QL80_.jpg" alt="Book 4">
+            <h3>Atomic Habits</h3>
+            <p>Author: James Clear</p>
+        </div>
+        <div class="book-card">
+            <img src="https://selfpublishing.com/wp-content/uploads/2023/10/Screenshot-2024-09-09-at-16.23.21.jpg" alt="Book 4">
+            <h3>Think and grow</h3>
+            <p>Author: James Clear</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        let index = 0;
+        const slides = document.querySelectorAll(".slides");
+
+        function showSlides() {
+            slides.forEach(slide => slide.classList.remove("active"));
+
+            index++;
+            if (index > slides.length) {
+                index = 1;
+            }
+
+            slides[index - 1].classList.add("active");
+            setTimeout(showSlides, 3000); // Change image every 3 seconds
+        }
+
+        setTimeout(showSlides, 3000);
+    };
+</script>
+
+</body>
+</html>
